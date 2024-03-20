@@ -1,0 +1,73 @@
+/* General classes */
+.box{
+    border: 1px solid black;
+    border-radius: 2px;
+    margin:1px;
+}
+.outer{
+    display: flex;
+    justify-content: center;
+}
+
+/* Container */
+.top-container{
+    display: grid;
+    grid-template-rows: 1fr 8fr;
+    width:60%;
+}
+.bottom-row{
+    display: grid;
+    grid-template-columns: 10fr 1fr;
+}
+
+/* Header (top)*/
+.header{
+    display: flex;
+    justify-content: space-between;
+    background-color: lightseagreen;
+}
+.header h3{
+    margin-left: 20px;
+}
+.header input{
+    margin: 10px;
+    border-radius: 4px;
+}
+
+.tools{
+    display: flex;
+    justify-content: center;
+}
+
+.tool{
+    /* margin:10px;   */
+    list-style: none;  
+}
+
+
+/* Wolrds (bottom-left)*/
+.container{
+    display: grid;
+    grid-template-rows: repeat(8,1fr);
+}
+
+.row{
+    display: grid;
+    grid-template-columns: repeat(10,1fr);
+}
+.block{
+    text-align: center;    
+}
+
+/* Inventory (bottom-right) */
+.inventory{
+    display: grid;
+    grid-template-rows: repeat(8,1fr);
+    justify-items: center;
+    padding: 0;
+}
+.inv-item{
+    width: 100%;
+    list-style: none;
+    text-align: center;    
+}
