@@ -4,6 +4,7 @@ const WS_WIDTH = 10;
 const WS_HEIGHT = 8;
 
 const INI_WORLD = [
+  // Initial state of the world
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 1, 1, 3, 1, 1, 2, 2, 2],
   [0, 0, 1, 3, 3, 3, 2, 2, 2, 0],
@@ -14,56 +15,57 @@ const INI_WORLD = [
   [3, 3, 1, 1, 1, 1, 2, 2, 0, 0],
 ];
 
-const blocksLogic = [
-  {
-    id: 0,
-    name: "Water", // Not possible to extract
-    color: "blue",
-  },
-  {
-    id: 1,
-    name: "Dirt",
-    under: 2, // Rock is underneath
-    color: "brown",
-  },
-  {
-    id: 2,
-    name: "Rock",
-    color: "grey",
-  },
-  {
-    id: 3,
-    name: "Tree",
-    under: 1, // Dirt is underneath
-    color: "green",
-  },
-];
+const logic = {
+  blocks: [
+    {
+      id: 0,
+      name: "Water", // Not possible to extract
+      color: "blue",
+    },
+    {
+      id: 1,
+      name: "Dirt",
+      under: 2, // Rock is underneath
+      color: "brown",
+    },
+    {
+      id: 2,
+      name: "Rock",
+      color: "grey",
+    },
+    {
+      id: 3,
+      name: "Tree",
+      under: 1, // Dirt is underneath
+      color: "green",
+    },
+  ],
+  tools: [
+    {
+      name: "Axe",
+      blockId: 3, // Extracts Trees
+    },
+    {
+      name: "Pickaxe",
+      blockId: 2, // Extracts Rock
+    },
+    {
+      name: "Shovel",
+      blockId: 1, // Extracts Dirt
+    },
+  ],
+};
 
-const toolsLogic = [
-  {
-    name: "Axe",
-    blockId: 3, // Extracts Trees
-  },
-  {
-    name: "Pickaxe",
-    blockId: 2, // Extracts Rock
-  },
-  {
-    name: "Shovel",
-    blockId: 1, // Extracts Dirt
-  },
-];
+const current = {
+  world: [], // Is filled during InitWorld();
+  inventory: [], // It's empty on page load.
+  tool: null, // Not selected;
+};
 
-const inventory = []; // It's empty on page load.
-const world = []; // Is filled during InitWorld();
-let curTool; // Not selected;
-
-// General flow
 // Prepare the world
 initTools();
 initWorld();
-
-//
+initResetButton();
 
 // General functions
 function initTools() {
@@ -71,9 +73,14 @@ function initTools() {
   const ul = document.querySelector("ul.tools");
   for (let elem of ul.children) {
     elem.addEventListener("click", selectTool);
-    const img = elem.firstChild; 
-    toolsLogic[img.dataset.id]["HTMLElement"] = img;
-  };
+    const img = elem.firstChild;
+    logic.tools[img.dataset.id]["HTMLElement"] = img;
+  }
+}
+
+function initResetButton() {
+  const button = document.querySelector("input.reset");
+  button.addEventListener("click", initWorld);
 }
 
 function initWorld() {
@@ -87,7 +94,7 @@ function initWorld() {
   }
 
   // reinit World array with initial values
-  world.push(...INI_WORLD);
+  current.world.push(...INI_WORLD);
 
   // Draw required number of rows
   for (let i = 0; i < WS_HEIGHT; i++) {
@@ -110,75 +117,121 @@ function initWorld() {
       const block = document.createElement("div"); // .block.box
       block.className = "block";
       block.classList.add("box");
-      const logic = blocksLogic[world[row][col]];
-      drawBlock(block, logic);
+      const logicBlock = logic.blocks[current.world[row][col]];
+      drawBlock(block, logicBlock);
       block.addEventListener("click", removeElement);
       return block;
     }
   }
 
   // Now redraw Inventory part
-  const inventoryElem = document.querySelector("ul.inventory");
+  const inventoryContainer = document.querySelector("ul.inventory");
 
   // Remove all previous inventory items. Just in case.
-  while (inventoryElem.firstChild) {
-    inventoryElem.removeChild(inventoryElem.firstChild);
+  while (inventoryContainer.firstChild) {
+    inventoryContainer.removeChild(inventoryContainer.firstChild);
   }
 
   // Empty inventory array also
-  inventory.splice(0);
+  current.inventory.splice(0);
 
   // Draw required number of inventory items
   for (let i = 0; i < WS_HEIGHT; i++) {
     const inv_item = createInventoryEmptyItem();
-    inventoryElem.appendChild(inv_item);
-  }
-
-  function createInventoryEmptyItem() {
-    const item = document.createElement("li");
-    item.className = "inv-item";
-    item.classList.add("box");
-    item.style.backgroundColor = "lightgrey";
-    item.innerText = "Empty";
-    return item;
+    inventoryContainer.appendChild(inv_item);
   }
 }
 
-function drawBlock(elem, logic) {
-  elem.style.backgroundColor = logic.color;
-  elem.innerText = logic.name;
-  elem.dataset.id = logic.id;
+function createInventoryEmptyItem() {
+  const item = document.createElement("li");
+  item.className = "inv-item";
+  item.classList.add("box");
+  item.style.backgroundColor = "lightgrey";
+  item.innerText = "Empty";
+  return item;
+}
+
+function drawBlock(elem, block) {
+  elem.style.backgroundColor = block.color;
+  elem.innerText = block.name;
+  elem.dataset.id = block.id;
 }
 
 function removeElement(elem) {
-  const blockElem = elem.currentTarget;
-  const block = blocksLogic[blockElem.dataset.id];
+  if (!current.tool) {
+    console.log("Tool is not selected");
+    return;
+  }
 
-  if (curTool.blockId != block.id) {
+  const blockElem = elem.currentTarget;
+  const block = logic.blocks[blockElem.dataset.id];
+
+  if (current.tool.blockId != block.id) {
     return; // Tool is not compatible with the terrain type
   }
 
-  fillInventory(block);
+  if (pushInventory(block) && block.under) {
+    // remove the block from the world;
+    const newBlock = logic.blocks[block.under];
+    drawBlock(blockElem, newBlock);
+  }
 }
 
 function restoreLastElement(elem) {
-  console.log("Restore element" + elem); // from the inventory
+  const invElem = elem.currentTarget;
+  const block = logic.blocks[invElem.dataset.id];
+  console.log(
+    `Restoring element ${block.name} from the inventory in place ???`
+  ); // from the inventory
+
+  pullInventory(invElem, block);
 }
 
 function selectTool(elem) {
   const toolElem = elem.currentTarget.firstChild;
 
   // Empty selection from previous tool
-  if (curTool) {
-    const curToolElem = curTool.HTMLElement;
+  if (current.tool) {
+    const curToolElem = current.tool.HTMLElement;
     curToolElem.classList.remove("active");
   }
 
-  curTool = toolsLogic[toolElem.dataset.id];
+  current.tool = logic.tools[toolElem.dataset.id];
   toolElem.classList.add("active");
-  console.log("Tool selected " + curTool.name);
+  console.log("Tool selected " + current.tool.name);
 }
 
-function fillInventory(block) {
-  console.log("Insert into inventory: " + block.name);
+function pushInventory(block) {
+  console.log(
+    `Inserting into inventory: ${block.name}, size of the inventory: ${current.inventory.length}`
+  );
+
+  if (current.inventory.length >= WS_HEIGHT) {
+    alert("The Inventory is full!");
+    return false;
+  }
+
+  current.inventory.push(block);
+
+  // add the element into inventory HTML
+  const inventoryContainer = document.querySelector("ul.inventory");
+  const inventoryItem =
+    inventoryContainer.children[current.inventory.length - 1];
+  drawBlock(inventoryItem, block);
+
+  inventoryItem.addEventListener("click", restoreLastElement);
+
+  return true; //successfully got the block.
+}
+
+function pullInventory(elem, block) {
+  // remove an element from HTML
+  const parent = elem.parentNode;
+  parent.removeChild(elem);
+  const lastElem = createInventoryEmptyItem();
+  parent.appendChild(lastElem);
+
+  //remove an element from the data
+  const index = current.inventory.indexOf(block);
+  current.inventory.splice(index, 1);
 }
