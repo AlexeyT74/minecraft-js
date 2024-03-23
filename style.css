@@ -8,6 +8,10 @@
     display: flex;
     justify-content: center;
 }
+ul{
+    margin:0;
+    padding: 0;
+}
 
 /* Container */
 .top-container{
@@ -25,25 +29,34 @@
     display: flex;
     justify-content: space-between;
     background-color: lightseagreen;
+    align-items: center;
 }
 .header h3{
     margin-left: 20px;
 }
 .header input{
-    margin: 10px;
     border-radius: 4px;
+    height:50px;
+    margin-right: 10px;
+    
 }
 
 .tools{
     display: flex;
     justify-content: center;
-}
-
-.tool{
-    /* margin:10px;   */
     list-style: none;  
+    align-items: center;
+    margin-top: 5px;
 }
-
+.tool img{
+    width: auto;
+    height:50px;
+    margin:1px;
+}
+/* active tool */
+.active{ 
+    border: 1px solid red;
+}
 
 /* Wolrds (bottom-left)*/
 .container{
@@ -65,9 +78,9 @@
     grid-template-rows: repeat(8,1fr);
     justify-items: center;
     padding: 0;
+    list-style: none;
 }
 .inv-item{
-    width: 100%;
-    list-style: none;
+    width: 100%;    
     text-align: center;    
 }
