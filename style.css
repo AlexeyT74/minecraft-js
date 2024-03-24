@@ -1,86 +1,112 @@
 /* General classes */
-.box{
-    border: 1px solid black;
-    border-radius: 2px;
-    margin:1px;
+* {
+  font-family: cursive;
 }
-.outer{
-    display: flex;
-    justify-content: center;
+.outer {
+  display: flex;
+  justify-content: center;
 }
-ul{
-    margin:0;
-    padding: 0;
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+/* terrain elements */
+.water,
+.rock,
+.dirt,
+.tree,
+.box {
+  border: 1px solid black;
+  border-radius: 2px;
+  margin: 1px;
+  background-size: cover;
+  /* width: 100%; */
+}
+.water {
+  background-color: blue;
+  background-image: url("./images/water.png");
+}
+.rock {
+  background-color: grey;
+  background-image: url("./images/rock.png");
+}
+.dirt {
+  background-color: brown;
+  background-image: url("./images/dirt.png");
+}
+.tree {
+  background-color: green;
+  background-image: url("./images/tree.png");
 }
 
 /* Container */
-.top-container{
-    display: grid;
-    grid-template-rows: 1fr 8fr;
-    width:60%;
+.top-container {
+  display: grid;
+  grid-template-rows: 1fr 8fr;
+  width: 60%;
 }
-.bottom-row{
-    display: grid;
-    grid-template-columns: 10fr 1fr;
+.bottom-row {
+  display: grid;
+  grid-template-columns: 10fr 1fr;
 }
 
 /* Header (top)*/
-.header{
-    display: flex;
-    justify-content: space-between;
-    background-color: lightseagreen;
-    align-items: center;
+.header {
+  display: flex;
+  justify-content: space-between;
+  background-color: lightseagreen;
+  align-items: center;
 }
-.header h3{
-    margin-left: 20px;
+.header h3 {
+  margin-left: 20px;
 }
-.header input{
-    border-radius: 4px;
-    height:50px;
-    margin-right: 10px;
-    
+.header input {
+  border-radius: 4px;
+  height: 50px;
+  margin-right: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  font-size: large;
 }
 
-.tools{
-    display: flex;
-    justify-content: center;
-    list-style: none;  
-    align-items: center;
-    margin-top: 5px;
+.tools {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  align-items: center;
+  margin-top: 5px;
 }
-.tool img{
-    width: auto;
-    height:50px;
-    margin:1px;
+.tool img {
+  width: auto;
+  height: 50px;
+  margin: 1px;
 }
 /* active tool */
-.active{ 
-    border: 1px solid red;
+.active {
+  border: 1px solid red;
 }
 
 /* Wolrds (bottom-left)*/
-.container{
-    display: grid;
-    grid-template-rows: repeat(8,1fr);
+.container {
+  display: grid;
+  grid-template-rows: repeat(8, 1fr);
 }
 
-.row{
-    display: grid;
-    grid-template-columns: repeat(10,1fr);
-}
-.block{
-    text-align: center;    
+.row {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
 }
 
 /* Inventory (bottom-right) */
-.inventory{
-    display: grid;
-    grid-template-rows: repeat(8,1fr);
-    justify-items: center;
-    padding: 0;
-    list-style: none;
+.inventory {
+  display: grid;
+  grid-template-rows: repeat(8, 1fr);
+  justify-items: center;
+  padding: 0;
+  list-style: none;
 }
-.inv-item{
-    width: 100%;    
-    text-align: center;    
+.inv-item {
+  width: 100%;
+  text-align: center;
 }

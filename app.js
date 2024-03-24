@@ -20,24 +20,24 @@ const logic = {
     {
       id: 0,
       name: "Water", // Not possible to extract
-      color: "blue",
+      style: "water",
     },
     {
       id: 1,
       name: "Dirt",
       under: 2, // Rock is underneath
-      color: "brown",
+      style: "dirt",
     },
     {
       id: 2,
       name: "Rock",
-      color: "grey",
+      style: "rock",
     },
     {
       id: 3,
       name: "Tree",
       under: 1, // Dirt is underneath
-      color: "green",
+      style: "tree",
     },
   ],
   tools: [
@@ -115,8 +115,7 @@ function initWorld() {
 
     function createBlock(row, col) {
       const block = document.createElement("div"); // .block.box
-      block.className = "block";
-      block.classList.add("box");
+      block.classList.add("block","box");
       const logicBlock = logic.blocks[current.world[row][col]];
       drawBlock(block, logicBlock);
       block.addEventListener("click", removeElement);
@@ -144,16 +143,16 @@ function initWorld() {
 
 function createInventoryEmptyItem() {
   const item = document.createElement("li");
-  item.className = "inv-item";
-  item.classList.add("box");
-  item.style.backgroundColor = "lightgrey";
-  item.innerText = "Empty";
+  item.classList.add("inv-item","box");
+ // item.style.backgroundColor = "lightgrey";
+  // item.innerText = "Empty";
   return item;
 }
 
 function drawBlock(elem, block) {
-  elem.style.backgroundColor = block.color;
-  elem.innerText = block.name;
+  // elem.style.backgroundColor = block.color;
+  elem.className = block.style;
+  // elem.innerText = block.name;
   elem.dataset.id = block.id;
 }
 
