@@ -21,7 +21,13 @@ ul {
   border-radius: 2px;
   margin: 1px;
   background-size: cover;
-  /* width: 100%; */
+}
+.water:hover,
+.rock:hover,
+.dirt:hover,
+.tree:hover {
+  border: 2px solid red;
+  margin: 0px;
 }
 .water {
   background-color: blue;
@@ -43,12 +49,12 @@ ul {
 /* Container */
 .top-container {
   display: grid;
-  grid-template-rows: 1fr 8fr;
+  grid-template-rows: 1fr var(--ws-height-fr);
   width: 60%;
 }
 .bottom-row {
   display: grid;
-  grid-template-columns: 10fr 1fr;
+  grid-template-columns: var(--ws-width-fr) 1fr;
 }
 
 /* Header (top)*/
@@ -84,29 +90,30 @@ ul {
 }
 /* active tool */
 .active {
-  border: 1px solid red;
+  border: 2px solid red;
+  margin: 0px;
 }
 
-/* Wolrds (bottom-left)*/
+/* Wolrd grid (bottom-left)*/
 .container {
   display: grid;
-  grid-template-rows: repeat(8, 1fr);
+  grid-template-rows: repeat(var(--ws-height), 1fr);
 }
 
 .row {
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
+  grid-template-columns: repeat(var(--ws-width), 1fr);
 }
 
 /* Inventory (bottom-right) */
 .inventory {
   display: grid;
-  grid-template-rows: repeat(8, 1fr);
-  justify-items: center;
+  grid-template-rows: repeat(var(--ws-height), 1fr);
+  justify-items: stretch;
   padding: 0;
-  list-style: none;
 }
 .inv-item {
-  width: 100%;
   text-align: center;
+  background-color: lightgrey;
+  /* transform: rotate(45deg); */
 }
