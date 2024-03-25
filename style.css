@@ -1,6 +1,7 @@
 /* General classes */
 * {
   font-family: cursive;
+  color: #2A2B2E;
 }
 .outer {
   display: flex;
@@ -17,7 +18,7 @@ ul {
 .dirt,
 .tree,
 .box {
-  border: 1px solid black;
+  border: 1px solid #2A2B2E;
   border-radius: 2px;
   margin: 1px;
   background-size: cover;
@@ -26,7 +27,7 @@ ul {
 .rock:hover,
 .dirt:hover,
 .tree:hover {
-  border: 2px solid red;
+  border: 2px solid #87ff65;
   margin: 0px;
 }
 .water {
@@ -54,14 +55,14 @@ ul {
 }
 .bottom-row {
   display: grid;
-  grid-template-columns: var(--ws-width-fr) 1fr;
+  grid-template-columns: var(--ws-width-fr) 2fr;
 }
 
 /* Header (top)*/
 .header {
   display: flex;
   justify-content: space-between;
-  background-color: lightseagreen;
+  background-color: #a4c2a8;
   align-items: center;
 }
 .header h3 {
@@ -85,12 +86,12 @@ ul {
 }
 .tool img {
   width: auto;
-  height: 50px;
-  margin: 1px;
+  height: 45px;
+  margin: 2px;
 }
 /* active tool */
 .active {
-  border: 2px solid red;
+  border: 2px solid #87ff65;
   margin: 0px;
 }
 
@@ -106,14 +107,26 @@ ul {
 }
 
 /* Inventory (bottom-right) */
+.inv-container{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background-color: #a4c2a8;
+}
+.inv-container span{
+  writing-mode: vertical-rl;
+  text-transform: uppercase;
+  text-orientation: upright;
+  text-align: center;
+  font-size: x-large;
+}
 .inventory {
   display: grid;
   grid-template-rows: repeat(var(--ws-height), 1fr);
   justify-items: stretch;
   padding: 0;
+  /* width: 50%; */
 }
 .inv-item {
   text-align: center;
-  background-color: lightgrey;
-  /* transform: rotate(45deg); */
+  background-color: #7F8E87;
 }
