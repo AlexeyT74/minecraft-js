@@ -51,7 +51,7 @@ ul {
 .top-container {
   display: grid;
   grid-template-rows: 1fr var(--ws-height-fr);
-  width: 60%;
+  width:70%;
 }
 .bottom-row {
   display: grid;
