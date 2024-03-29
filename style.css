@@ -94,6 +94,24 @@ ul {
   border: 2px solid #87ff65;
   margin: 0px;
 }
+/* Tooltips for the tools */
+.tool .tooltiptext {
+  visibility: hidden;
+  width: 80px;
+  background-color: #2A2B2E;
+  color: #a4c2a8;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 2s;
+}
+.tool:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
 
 /* Wolrd grid (bottom-left)*/
 .container {

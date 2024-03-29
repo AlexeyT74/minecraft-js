@@ -1,14 +1,5 @@
 // Constants
 
-// const WS_WIDTH = 10;
-// const WS_HEIGHT = 8;
-
-// // translate these constants into CSS
-// document.documentElement.style.setProperty("--ws-height", WS_HEIGHT);
-// document.documentElement.style.setProperty("--ws-width", WS_WIDTH);
-// document.documentElement.style.setProperty("--ws-height-fr", `${WS_HEIGHT}fr`);
-// document.documentElement.style.setProperty("--ws-width-fr", `${WS_WIDTH}fr`);
-
 let worldType = 0; //First option of the world grid
 
 const init = [
@@ -106,9 +97,9 @@ const logic = {
 };
 
 const current = {
-  world: [], // Is filled during InitWorld(); for future use if there are several predefined worlds to load as initial
+  world: [], // Is filled during InitWorld(); 
   inventory: [], // It's empty on page load.
-  tool: null, // Not selected;
+  tool: null, // Not selected yet;
 };
 
 // Prepare the world
@@ -153,7 +144,7 @@ function initChangeWorld() {
   for(let i=0; i<init.length; i++){
     const option = document.createElement("option");
     option.value = i;
-    option.innerText = init[i].name;
+    option.innerText = `${init[i].name} (${init[i].width}x${init[i].height})`;
     select.appendChild(option);    
   }
   select.value = "0";
@@ -212,7 +203,7 @@ function initWorld() {
   // Empty inventory array also
   current.inventory.splice(0);
 
-  // Draw required number of inventory items
+  // Draw required number of empty inventory items
   for (let i = 0; i < init[worldType].height; i++) {
     const inv_item = createInventoryEmptyItem();
     inventoryContainer.appendChild(inv_item);
